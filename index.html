@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Góc Sách Sẻ Chia – Hub | Prototype PRD v1.2</title>
+  <link rel="icon" type="image/jpeg" href="assets/logo-h-book.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Brand & Role Navigation -->
+    <header class="topbar">
+      <div class="topbar-inner container">
+        <div class="brand-group" role="button" tabindex="0" id="brandHomeBtn" title="Về trang chủ Marketplace">
+          <div class="brand-logo">
+            <img id="brandLogoImg" class="brand-logo-img" src="assets/logo-h-book.jpg" alt="Logo chữ H sách cũ Góc Sách Sẻ Chia – Hub" />
+          </div>
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <span class="brand-title">GÓC SÁCH SẺ CHIA – HUB</span>
+              <span class="badge-prd">PRD v1.2</span>
+            </div>
+            <span class="brand-subtitle">Sàn kết nối sách cũ • Đa người bán • Escrow mô phỏng</span>
+          </div>
+        </div>
+
+        <nav class="role-tabs" aria-label="Chuyển vai trò thuyết trình">
+          <button type="button" class="role-tab active" data-tab="buyer" id="tabBuyer">
+            <span>Sàn sách & Buyer</span>
+          </button>
+          <button type="button" class="role-tab" data-tab="seller" id="tabSeller">
+            <span>Seller Center</span>
+            <span class="tab-badge" id="badgeSellerAlerts">0</span>
+          </button>
+          <button type="button" class="role-tab" data-tab="admin" id="tabAdmin">
+            <span>Admin Console</span>
+            <span class="tab-badge" id="badgeAdminQueue">0</span>
+          </button>
+          <button type="button" class="role-tab" data-tab="demolab" id="tabDemoLab">
+            <span>Demo & Test Lab</span>
+          </button>
+        </nav>
+
+        <div class="topbar-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="btnToggleTheme" title="Chuyển chế độ Sáng / Tối">
+            <span id="themeLabel">Chế độ Tối</span>
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" id="btnOpenCart" title="Mở giỏ hàng & Checkout">
+            <span>Giỏ hàng</span>
+            <span class="pill-count" id="headerCartBadge">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Presentation Control Strip (Mock Clock + Quick Reset) -->
+      <div class="control-strip">
+        <div class="container control-strip-inner">
+          <div class="clock-cluster">
+            <span class="sim-chip" id="configSimBadge">SIMULATED • 0% HOA HỒNG</span>
+            <span class="clock-display" title="Đồng hồ mô phỏng dùng cho kiểm thử tự động hoàn tất 48h (CONF-01)">
+              Thời gian mô phỏng: <strong id="mockClockLabel">--</strong>
+            </span>
+          </div>
+          <div class="clock-actions">
+            <button type="button" class="btn-chip" data-advance-hours="24" title="Tua nhanh 24 giờ">+24 giờ</button>
+            <button type="button" class="btn-chip btn-chip-accent" data-advance-hours="48" title="Tua nhanh 48 giờ để kích hoạt Auto-Complete">+48 giờ</button>
+            <button type="button" class="btn-chip" id="btnRunAutoComplete" title="Quét các đơn đủ điều kiện tự động hoàn tất">Quét Auto-Complete</button>
+            <span class="strip-divider"></span>
+            <button type="button" class="btn-chip btn-chip-danger" id="btnResetDemo" title="Khôi phục toàn bộ dữ liệu mẫu ban đầu">Reset mẫu</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic View Area -->
+    <main class="main-content container" id="mainViewport"></main>
+
+    <!-- Footer Disclaimer -->
+    <footer class="app-footer">
+      <div class="container footer-inner">
+        <div>
+          <strong>Góc Sách Sẻ Chia – Hub (Prototype PRD v1.2)</strong> •
+          Thời hạn xác nhận <span id="footerTimeoutHours">48</span> giờ •
+          Phí vận chuyển riêng từng Order • Phân bổ mã giảm giá theo tỷ trọng giá trị Order •
+          Hoa hồng <span id="footerCommissionRate">0</span>%.
+        </div>
+        <div class="footer-note">
+          Lưu ý: Mọi dữ liệu thanh toán, Escrow, vận chuyển và Payout trong prototype đều được gắn nhãn <code>simulated</code> / <code>projection</code> (chưa kết nối cổng thanh toán hay API vận chuyển thật).
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Slide-over Cart Drawer -->
+  <div class="drawer-backdrop hidden" id="cartDrawerBackdrop">
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-label="Giỏ hàng">
+      <div class="drawer-header">
+        <div>
+          <h3>Giỏ hàng của Buyer</h3>
+          <p class="muted text-xs">Nhóm tự động theo từng Seller khi tiến hành Checkout</p>
+        </div>
+        <button type="button" class="btn-icon" id="btnCloseCartDrawer" aria-label="Đóng giỏ hàng">✕</button>
+      </div>
+      <div class="drawer-body" id="cartDrawerBody"></div>
+      <div class="drawer-footer" id="cartDrawerFooter"></div>
+    </aside>
+  </div>
+
+  <!-- Generic Modal Container -->
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal-card" role="dialog" aria-modal="true" id="modalCard">
+      <div class="modal-header">
+        <h3 id="modalTitle">Chi tiết</h3>
+        <button type="button" class="btn-icon" id="btnCloseModal" aria-label="Đóng">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <!-- Toast Stack -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- Scripts in strict dependency order (100% file:// & offline compatible) -->
+  <script defer src="js/config.js"></script>
+  <script defer src="js/data.js"></script>
+  <script defer src="js/pricing.js"></script>
+  <script defer src="js/stateMachine.js"></script>
+  <script defer src="js/store.js"></script>
+  <script defer src="js/views/buyerView.js"></script>
+  <script defer src="js/views/sellerView.js"></script>
+  <script defer src="js/views/adminView.js"></script>
+  <script defer src="js/views/demoLabView.js"></script>
+  <script defer src="js/app.js"></script>
+</body>
+</html>
